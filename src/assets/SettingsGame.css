@@ -1,0 +1,31 @@
+
+
+h1 {
+    color: deeppink;
+}
+
+.button {
+    background-color: pink;
+
+}
+
+.color-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+.colors-panel {
+    display: grid;                     /* הופך את האיזור לגריד */
+    grid-template-columns: repeat(3, 80px); /* 3 עמודות, כל כפתור 50px */
+    gap: 15px;                         /* רווח בין הכפתורים */
+    border: 2px solid black;           /* מסגרת שחורה לפאנל */
+    padding: 10px;                     /* רווח פנימי מהמסגרת */
+    width: fit-content;                /* שהמסגרת תתאים לגודל הכפתורים */
+    height: fit-content;
+    margin: 0 auto;                    /* מרכז את הפאנל באמצע */
+}
+input[type="number"] {
+    background-color: lightblue;
+}
+.go{
+    background-color: deeppink;
+}
