@@ -34,6 +34,7 @@ const checkAvailabale = (rowIndex, colIndex) => {
     for (let i=rows-1; i>=0; i--){
         if (newBoard[i][colIndex].color === "white"){
             (newBoard[i][colIndex].color = colorP1);// צובע את האינדקס המסויים בשורה ועמודה ספציפיים
+            return setBoard(newBoard);
         }
         else {
             (newBoard[i][colIndex].color = colorP2)
