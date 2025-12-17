@@ -1,11 +1,8 @@
 import {useState} from "react";
 import './SettingsGame.css'
 
-function SettingsGame ({switchToGame,row,col,setRow,setCol,currentPlayer,setCurrentPlayer}) {
+function SettingsGame ({switchToGame,row,col,setRow,setCol,currentPlayer,setCurrentPlayer,colorP1,colorP2,setColorP1,setColorP2 }) {
 
-
-    const [colorP1, setColorP1] = useState(null);
-    const [colorP2, setColorP2] = useState(null);
     const [colors, setColors] = useState(["red", "blue", "yellow", "pink", "green", "black"]);
 
 
@@ -106,7 +103,4 @@ function SettingsGame ({switchToGame,row,col,setRow,setCol,currentPlayer,setCurr
     );
 
 }
-
-
-
 export default SettingsGame;

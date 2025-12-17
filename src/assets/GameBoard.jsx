@@ -3,7 +3,7 @@ import "./GameBoard.css"
 
 
 
-function GameBoard({switchToSettings,row,col, currentPlayer,setCurrentPlayer}){
+function GameBoard({switchToSettings,row,col, currentPlayer,setCurrentPlayer,colorP1,colorP2,setColorP1,setColorP2 }){
     const rows=Number(row);
     const cols=Number(col);
     const [winner,setWinner] = useState(null);
@@ -22,11 +22,26 @@ const createBoard =()=>{
             tempRow.push({value:"",color:"white"});
         }
         newBoard.push(tempRow);
-
     }
     return newBoard;
 }
+
     const [board,setBoard]= useState(createBoard);
+
+
+const checkAvailabale = (rowIndex, colIndex) => {
+    const newBoard = [...board] ; // מערך עזר חדש
+    for (let i=rows-1; i>=0; i--){
+        if (newBoard[i][colIndex].color === "white"){
+            (newBoard[i][colIndex].color = colorP1);// צובע את האינדקס המסויים בשורה ועמודה ספציפיים
+        }
+        else {
+            (newBoard[i][colIndex].color = colorP2)
+        }
+    }
+
+}
+
 
     return(
 
@@ -42,8 +57,10 @@ const createBoard =()=>{
                     <div className="board-row" key={r}>
                         {row.map((col,c)=> (
                             <div className="board-col"
-                            key={c}
+                                 onClick={()=>checkAvailabale(r,c)}
+                                 key={c}
                             style = {{backgroundColor:col.color}}>
+
                                 {col.value}
                             </div>
                         ))}
