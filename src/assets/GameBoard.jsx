@@ -31,18 +31,15 @@ const createBoard =()=>{
 
 const checkAvailabale = (rowIndex, colIndex) => {
     const newBoard = [...board] ; // מערך עזר חדש
-    for (let i=rows-1; i>=0; i--){
-        if (newBoard[i][colIndex].color === "white"){
-            (newBoard[i][colIndex].color = colorP1);// צובע את האינדקס המסויים בשורה ועמודה ספציפיים
-            return setBoard(newBoard);
-        }
-        else {
-            (newBoard[i][colIndex].color = colorP2)
+    for (let i=rows-1; i>=0; i--) {
+        if (newBoard[i][colIndex].color === "white") {
+            (newBoard[i][colIndex].color = currentPlayer=== 1 ? colorP1:colorP2);// צובע את האינדקס המסויים בשורה ועמודה ספציפיים
+            break;
         }
     }
-
-}
-
+    setBoard(newBoard);
+    setCurrentPlayer(p=>(p===1 ? 2:1));
+    };
 
     return(
 
