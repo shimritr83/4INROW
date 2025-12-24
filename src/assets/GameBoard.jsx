@@ -17,7 +17,6 @@ const moveToSettings = ()=> {
 
     const colVictoryCheck = (colIndex, currentColor, boardToCheck) => {
         let count = 0;
-        // רצוי להשתמש באורך האמיתי של המערך כדי למנוע טעויות
         for (let i = 0; i < boardToCheck.length; i++) {
             if (boardToCheck[i][colIndex].color === currentColor) {
                 count++;
@@ -30,7 +29,6 @@ const moveToSettings = ()=> {
     };
     const rowVictoryCheck = (rowIndex, currentColor, boardToCheck) => {
         let count = 0;
-        // רצוי להשתמש באורך האמיתי של המערך כדי למנוע טעויות
         for (let j = 0; j < cols; j++) {
             if (boardToCheck[rowIndex][j].color === currentColor) {
                 count++;
@@ -59,33 +57,23 @@ const createBoard =()=>{
 
     const checkAvailabale = (rowIndex, colIndex) => {
         if (winner) return;
-
         const newBoard = board.map(r => r.map(c => ({ ...c })));
         const playerColor = currentPlayer === 1 ? colorP1 : colorP2;
         let found = false;
-        let lastRow = -1; // משתנה שישמור את השורה שבה הונחה הדיסקית
-
+        let lastRow = -1;
         for (let i = rows - 1; i >= 0; i--) {
             if (newBoard[i][colIndex].color === "white") {
                 newBoard[i][colIndex].color = playerColor;
                 found = true;
-                lastRow = i; // מעדכנים את השורה שנבחרה
+                lastRow = i;
                 break;
             }
         }
 
         if (found) {
-            // --- כאן נכנס השינוי ---
-
-            // 1. בודקים ניצחון בעמודה
             const isColWin = colVictoryCheck(colIndex, playerColor, newBoard);
-
-            // 2. בודקים ניצחון בשורה (משתמשים ב-lastRow שמצאנו בלולאה)
             const isRowWin = rowVictoryCheck(lastRow, playerColor, newBoard);
-
             setBoard(newBoard);
-
-            // 3. אם יש ניצחון באחד מהכיוונים
             if (isColWin || isRowWin) {
                 setWinner(currentPlayer);
                 setTimeout(() => alert("Player " + currentPlayer + " Wins!"), 100);
