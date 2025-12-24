@@ -28,6 +28,20 @@ const moveToSettings = ()=> {
         }
         return false;
     };
+    const rowVictoryCheck = (rowIndex, currentColor, boardToCheck) => {
+        let count = 0;
+        // רצוי להשתמש באורך האמיתי של המערך כדי למנוע טעויות
+        for (let j = 0; j < cols; j++) {
+            if (boardToCheck[rowIndex][j].color === currentColor) {
+                count++;
+                if (count === 4) return true;
+            } else {
+                count = 0;
+            }
+        }
+        return false;
+    };
+
 
 const createBoard =()=>{
     const newBoard=[];
@@ -46,35 +60,40 @@ const createBoard =()=>{
     const checkAvailabale = (rowIndex, colIndex) => {
         if (winner) return;
 
-        // העתקה עמוקה ומלאה של הלוח כדי ש-React יזהה שינוי
         const newBoard = board.map(r => r.map(c => ({ ...c })));
         const playerColor = currentPlayer === 1 ? colorP1 : colorP2;
         let found = false;
+        let lastRow = -1; // משתנה שישמור את השורה שבה הונחה הדיסקית
 
         for (let i = rows - 1; i >= 0; i--) {
             if (newBoard[i][colIndex].color === "white") {
                 newBoard[i][colIndex].color = playerColor;
                 found = true;
+                lastRow = i; // מעדכנים את השורה שנבחרה
                 break;
             }
         }
+
         if (found) {
-            // 1. קודם כל בודקים ניצחון על המערך החדש (newBoard)
-            const isWin = colVictoryCheck(colIndex, playerColor, newBoard);
-            // 2. מעדכנים את הלוח בתצוגה
+            // --- כאן נכנס השינוי ---
+
+            // 1. בודקים ניצחון בעמודה
+            const isColWin = colVictoryCheck(colIndex, playerColor, newBoard);
+
+            // 2. בודקים ניצחון בשורה (משתמשים ב-lastRow שמצאנו בלולאה)
+            const isRowWin = rowVictoryCheck(lastRow, playerColor, newBoard);
+
             setBoard(newBoard);
 
-            if (isWin) {
+            // 3. אם יש ניצחון באחד מהכיוונים
+            if (isColWin || isRowWin) {
                 setWinner(currentPlayer);
-                // השהייה קלה כדי שהמשתמש יראה את הצבע משתנה לפני ה-Alert
                 setTimeout(() => alert("Player " + currentPlayer + " Wins!"), 100);
             } else {
-                // 3. עוברים שחקן רק אם אין ניצחון
                 setCurrentPlayer(p => (p === 1 ? 2 : 1));
             }
         }
     };
-
     return(
 
         <div>
