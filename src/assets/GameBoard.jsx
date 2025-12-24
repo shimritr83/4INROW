@@ -14,6 +14,21 @@ const moveToSettings = ()=> {
 
    }
 }
+
+    const colVictoryCheck = (colIndex, currentColor, boardToCheck) => {
+        let count = 0;
+        // רצוי להשתמש באורך האמיתי של המערך כדי למנוע טעויות
+        for (let i = 0; i < boardToCheck.length; i++) {
+            if (boardToCheck[i][colIndex].color === currentColor) {
+                count++;
+                if (count === 4) return true;
+            } else {
+                count = 0;
+            }
+        }
+        return false;
+    };
+
 const createBoard =()=>{
     const newBoard=[];
     for (let i = 0; i < rows; i++){
@@ -28,17 +43,36 @@ const createBoard =()=>{
 
     const [board,setBoard]= useState(createBoard);
 
+    const checkAvailabale = (rowIndex, colIndex) => {
+        if (winner) return;
 
-const checkAvailabale = (rowIndex, colIndex) => {
-    const newBoard = [...board] ; // מערך עזר חדש
-    for (let i=rows-1; i>=0; i--) {
-        if (newBoard[i][colIndex].color === "white") {
-            (newBoard[i][colIndex].color = currentPlayer=== 1 ? colorP1:colorP2);// צובע את האינדקס המסויים בשורה ועמודה ספציפיים
-            break;
+        // העתקה עמוקה ומלאה של הלוח כדי ש-React יזהה שינוי
+        const newBoard = board.map(r => r.map(c => ({ ...c })));
+        const playerColor = currentPlayer === 1 ? colorP1 : colorP2;
+        let found = false;
+
+        for (let i = rows - 1; i >= 0; i--) {
+            if (newBoard[i][colIndex].color === "white") {
+                newBoard[i][colIndex].color = playerColor;
+                found = true;
+                break;
+            }
         }
-    }
-    setBoard(newBoard);
-    setCurrentPlayer(p=>(p===1 ? 2:1));
+        if (found) {
+            // 1. קודם כל בודקים ניצחון על המערך החדש (newBoard)
+            const isWin = colVictoryCheck(colIndex, playerColor, newBoard);
+            // 2. מעדכנים את הלוח בתצוגה
+            setBoard(newBoard);
+
+            if (isWin) {
+                setWinner(currentPlayer);
+                // השהייה קלה כדי שהמשתמש יראה את הצבע משתנה לפני ה-Alert
+                setTimeout(() => alert("Player " + currentPlayer + " Wins!"), 100);
+            } else {
+                // 3. עוברים שחקן רק אם אין ניצחון
+                setCurrentPlayer(p => (p === 1 ? 2 : 1));
+            }
+        }
     };
 
     return(
